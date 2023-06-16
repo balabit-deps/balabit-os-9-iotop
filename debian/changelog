@@ -1,3 +1,12 @@
+iotop (0.6-24-g733f3f8-1.1ubuntu0.1) jammy; urgency=medium
+
+  * d/p/0001-Workaround-crashes-due-to-non-UTF-8-characters-in-pr.patch:
+    Fix the crash caused by non-UTF-8 characters by using the Python
+    feature of replacing non-UTF-characters with the U+FFFD replacement
+    character. (LP: #1932523)
+
+ -- Michal Maloszewski <michal.maloszewski@canonical.com>  Fri, 16 Jun 2023 15:55:00 +0200
+
 iotop (0.6-24-g733f3f8-1.1build2) jammy; urgency=high
 
   * No change rebuild for ppc64el baseline bump.

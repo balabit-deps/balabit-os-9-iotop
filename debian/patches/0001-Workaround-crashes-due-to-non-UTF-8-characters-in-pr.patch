@@ -1,0 +1,31 @@
+From 443737ec620a699286b9b2e44dbcaac53f553812 Mon Sep 17 00:00:00 2001
+From: Yanichkin Alexander <Alexander_Sergey@mail.ru>
+Date: Fri, 8 Oct 2021 09:25:31 +0800
+Subject: [PATCH] Workaround crashes due to non-UTF-8 characters in process
+ command-lines
+
+Use the Python feature of replacing non-UTF-8 characters
+with the U+FFFD REPLACEMENT CHARACTER (�).
+
+This is only a workaround, a more useful action would be to guess the
+encoding using chardet or similar and coerce the bytes into Unicode.
+
+Origin: upstream, https://repo.or.cz/iotop.git/commit/443737ec620a699286b9b2e44dbcaac53f553812
+Bug-Debian: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=737043
+Bug-Ubuntu: https://bugs.launchpad.net/ubuntu/+source/iotop/+bug/1932523
+Last-Update: 2023-06-19
+---
+ iotop/data.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/iotop/data.py
++++ b/iotop/data.py
+@@ -207,7 +207,7 @@ def find_uids(options):
+ def parse_proc_pid_status(pid):
+     result_dict = {}
+     try:
+-        for line in open('/proc/%d/status' % pid):
++        for line in open('/proc/%d/status' % pid, errors='replace'):
+             key, value = line.split(':', 1)
+             result_dict[key] = value.strip()
+     except IOError:
